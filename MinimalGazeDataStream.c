@@ -1,8 +1,8 @@
 /*
-* This is an example that demonstrates how to connect to the EyeX Engine and subscribe to the lightly filtered gaze data stream.
-*
-* Copyright 2013-2014 Tobii Technology AB. All rights reserved.
-*/
+ * This is an example that demonstrates how to connect to the EyeX Engine and subscribe to the lightly filtered gaze data stream.
+ *
+ * Copyright 2013-2014 Tobii Technology AB. All rights reserved.
+ */
 #define WIN32_LEAN_AND_MEAN
 
 #include <Windows.h>
@@ -43,7 +43,7 @@ SOCKET        sListen, sClient;
 int           iAddrSize;
 HANDLE        hThread;
 DWORD         dwThreadId;
-struct sockaddr_in local, client;
+struct sockaddr_in local,client;
 BOOL gotClient = FALSE;
 //Gaze data for server send
 double gazeX, gazeY;
@@ -86,7 +86,7 @@ void ValidateArgs(int argc, char **argv)
 			case 'i':
 				bInterface = TRUE;
 				if (strlen(argv[i]) > 3)
-					strcpy(szAddress,&argv[i][3]);
+					strcpy(szAddress, &argv[i][3]);
 				break;
 			case 'o':
 				bRecvOnly = TRUE;
@@ -100,8 +100,8 @@ void ValidateArgs(int argc, char **argv)
 }
 
 /*
-* Initializes g_hGlobalInteractorSnapshot with an interactor that has the Gaze Point behavior.
-*/
+ * Initializes g_hGlobalInteractorSnapshot with an interactor that has the Gaze Point behavior.
+ */
 BOOL InitializeGlobalInteractorSnapshot(TX_CONTEXTHANDLE hContext)
 {
 	TX_HANDLE hInteractor = TX_EMPTY_HANDLE;
@@ -121,8 +121,8 @@ BOOL InitializeGlobalInteractorSnapshot(TX_CONTEXTHANDLE hContext)
 }
 
 /*
-* Callback function invoked when a snapshot has been committed.
-*/
+ * Callback function invoked when a snapshot has been committed.
+ */
 void TX_CALLCONVENTION OnSnapshotCommitted(TX_CONSTHANDLE hAsyncData, TX_USERPARAM param)
 {
 	// check the result code using an assertion.
@@ -134,25 +134,25 @@ void TX_CALLCONVENTION OnSnapshotCommitted(TX_CONSTHANDLE hAsyncData, TX_USERPAR
 }
 
 /*
-* Callback function invoked when the status of the connection to the EyeX Engine has changed.
-*/
+ * Callback function invoked when the status of the connection to the EyeX Engine has changed.
+ */
 void TX_CALLCONVENTION OnEngineConnectionStateChanged(TX_CONNECTIONSTATE connectionState, TX_USERPARAM userParam)
 {
 	switch (connectionState) {
 	case TX_CONNECTIONSTATE_CONNECTED: {
-										   BOOL success;
-										   printf("The connection state is now CONNECTED (We are connected to the EyeX Engine)\n");
-										   // commit the snapshot with the global interactor as soon as the connection to the engine is established.
-										   // (it cannot be done earlier because committing means "send to the engine".)
-										   success = txCommitSnapshotAsync(g_hGlobalInteractorSnapshot, OnSnapshotCommitted, NULL) == TX_RESULT_OK;
-										   if (!success) {
-											   printf("Failed to initialize the data stream.\n");
-										   }
-										   else
-										   {
-											   printf("Waiting for gaze data to start streaming...\n");
-										   }
-	}
+			BOOL success;
+			printf("The connection state is now CONNECTED (We are connected to the EyeX Engine)\n");
+			// commit the snapshot with the global interactor as soon as the connection to the engine is established.
+			// (it cannot be done earlier because committing means "send to the engine".)
+			success = txCommitSnapshotAsync(g_hGlobalInteractorSnapshot, OnSnapshotCommitted, NULL) == TX_RESULT_OK;
+			if (!success) {
+				printf("Failed to initialize the data stream.\n");
+			}
+			else
+			{
+				printf("Waiting for gaze data to start streaming...\n");
+			}
+		}
 		break;
 
 	case TX_CONNECTIONSTATE_DISCONNECTED:
@@ -174,8 +174,8 @@ void TX_CALLCONVENTION OnEngineConnectionStateChanged(TX_CONNECTIONSTATE connect
 }
 
 /*
-* Handles an event from the Gaze Point data stream.
-*/
+ * Handles an event from the Gaze Point data stream.
+ */
 void OnGazeDataEvent(TX_HANDLE hGazeDataBehavior)
 {
 	char szBuff[DEFAULT_BUFFER];
@@ -214,7 +214,7 @@ void OnGazeDataEvent(TX_HANDLE hGazeDataBehavior)
 			}
 			gotClient = FALSE;
 		}
-
+		
 	}
 	TX_GAZEPOINTDATAEVENTPARAMS eventParams;
 	if (txGetGazePointDataEventParams(hGazeDataBehavior, &eventParams) == TX_RESULT_OK) {
@@ -222,15 +222,14 @@ void OnGazeDataEvent(TX_HANDLE hGazeDataBehavior)
 		gazeX = eventParams.X;
 		gazeY = eventParams.Y;
 		gotClient = TRUE;
-	}
-	else {
+	} else {
 		printf("Failed to interpret gaze data event packet.\n");
 	}
 }
 
 /*
-* Callback function invoked when an event has been received from the EyeX Engine.
-*/
+ * Callback function invoked when an event has been received from the EyeX Engine.
+ */
 void TX_CALLCONVENTION HandleEvent(TX_CONSTHANDLE hAsyncData, TX_USERPARAM userParam)
 {
 	TX_HANDLE hEvent = TX_EMPTY_HANDLE;
@@ -249,7 +248,7 @@ void TX_CALLCONVENTION HandleEvent(TX_CONSTHANDLE hAsyncData, TX_USERPARAM userP
 			inet_ntoa(client.sin_addr), ntohs(client.sin_port));
 		gotClient = TRUE;
 	}
-	txGetAsyncDataContent(hAsyncData, &hEvent);
+    txGetAsyncDataContent(hAsyncData, &hEvent);
 
 	// NOTE. Uncomment the following line of code to view the event object. The same function can be used with any interaction object.
 	//OutputDebugStringA(txDebugObject(hEvent));
@@ -267,8 +266,8 @@ void TX_CALLCONVENTION HandleEvent(TX_CONSTHANDLE hAsyncData, TX_USERPARAM userP
 }
 
 /*
-* Application entry point.
-*/
+ * Application entry point.
+ */
 int main(int argc, char* argv[])
 {
 	TX_CONTEXTHANDLE hContext = TX_EMPTY_HANDLE;
@@ -322,8 +321,7 @@ int main(int argc, char* argv[])
 	// let the events flow until a key is pressed.
 	if (success) {
 		printf("Initialization was successful.\n");
-	}
-	else {
+	} else {
 		printf("Initialization failed.\n");
 	}
 	printf("Press any key to exit...\n");
