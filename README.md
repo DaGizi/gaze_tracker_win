@@ -14,3 +14,4 @@ In this repository you can find the windows side server code for getting minimal
 1. Open TobiiEyeXSdk-cpp/samples/MinimalFixationDataStream/MinimalFixationDataStream.c
 2. Copy & paste the [MinimalFixationDataStream.c](https://github.com/DaGizi/gaze_tracker_win/blob/master/MinimalFixationDataStream.c)
 3. build & run directly from visual studio
+~~~
